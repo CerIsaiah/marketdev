@@ -6,8 +6,6 @@ __pycache__/
 env/
 db.sqlite3
 
-# Django
-/staticfiles/
 
 # React
 /react_build/
