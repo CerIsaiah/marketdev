@@ -30,16 +30,16 @@ ALLOWED_HOSTS = []
 
 
 
-if DEBUG:
-    ALLOWED_HOSTS += [
-        'localhost',
-        '127.0.0.1',
-    ]
-else:
-    ALLOWED_HOSTS += [
-        'marketdev.onrender.com',
-        '.onrender.com',  # Allows all subdomains of onrender.com
-    ]
+ALLOWED_HOSTS = ['marketdev.onrender.com', 'localhost', '127.0.0.1']
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# Add these lines at the end of your settings.py
+print("DEBUG:", DEBUG)
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
+print("RENDER_EXTERNAL_HOSTNAME:", RENDER_EXTERNAL_HOSTNAME)
 
 AUTH_USER_MODEL = 'api.User'
 
