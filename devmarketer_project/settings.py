@@ -24,9 +24,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-^#p144u_(ev)@1ni!@#g(f_gaet@vh%fq^wc3h@+@(lq#tzma9"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+DEBUG = False
 
 ALLOWED_HOSTS = []
+
+
+
+if DEBUG:
+    ALLOWED_HOSTS += [
+        'localhost',
+        '127.0.0.1',
+    ]
+else:
+    ALLOWED_HOSTS += [
+        'marketdev.onrender.com',
+        '.onrender.com',  # Allows all subdomains of onrender.com
+    ]
+
 AUTH_USER_MODEL = 'api.User'
 
 # Application definition
