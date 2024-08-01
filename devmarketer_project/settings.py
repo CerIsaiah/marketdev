@@ -81,15 +81,10 @@ WSGI_APPLICATION = "devmarketer_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://market_oyle_user:iK4J9BlAlrhvKn4hkAEk1z0IpRUKFQkd@dpg-cqluoqqj1k6c739s24pg-a/market_oyle',
-        conn_max_age=600
-    )
-
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
 }
-
 '''
 Use this for testing
 "default": {
