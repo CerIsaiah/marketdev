@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: marketdev
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn devmarketer_project.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: database_1o26
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: RENDER_EXTERNAL_HOSTNAME
+        value: marketdev.onrender.com
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com,marketdev.onrender.com"
+
+databases:
+  - name: database_1o26
+    databaseName: database_1o26
+    user: database_1o26_user
