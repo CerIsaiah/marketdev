@@ -100,7 +100,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'devmarketer_project.middleware.RequestLoggingMiddleware',
 ]
 
 ROOT_URLCONF = "devmarketer_project.urls"
@@ -217,14 +216,3 @@ logger.info(f"RENDER_EXTERNAL_HOSTNAME: {RENDER_EXTERNAL_HOSTNAME}")
 logger.info(f"DATABASE_URL is set: {'Yes' if 'DATABASE_URL' in os.environ else 'No'}")
 logger.info(f"Static URL: {STATIC_URL}")
 logger.info(f"Static Root: {STATIC_ROOT}")
-
-class RequestLoggingMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        logger.info(f"Received request: {request.method} {request.path}")
-        logger.info(f"Headers: {request.headers}")
-        response = self.get_response(request)
-        logger.info(f"Response status: {response.status_code}")
-        return response
