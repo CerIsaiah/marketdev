@@ -84,7 +84,7 @@ WSGI_APPLICATION = "devmarketer_project.wsgi.application"
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://market_oyle_user:iK4J9BlAlrhvKn4hkAEk1z0IpRUKFQkd@dpg-cqluoqqj1k6c739s24pg-a.oregon-postgres.render.com/market_oyle',
+        default='postgresql://market_oyle_user:iK4J9BlAlrhvKn4hkAEk1z0IpRUKFQkd@dpg-cqluoqqj1k6c739s24pg-a/market_oyle',
         conn_max_age=600
     )
 
