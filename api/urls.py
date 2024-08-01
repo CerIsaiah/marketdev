@@ -1,8 +1,13 @@
 from django.urls import path
 from . import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.http import HttpResponse
+
+def test_view(request):
+    return HttpResponse("Hello, World!")
 
 urlpatterns = [
+    path('', test_view, name='test'),
     path('users/register/', views.register_user, name='register-user'),
     path('users/profile/', views.UserProfileView.as_view(), name='user-profile'),
     path('users/dashboard/', views.UserDashboardView.as_view(), name='user-dashboard'),

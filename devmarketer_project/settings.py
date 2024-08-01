@@ -55,19 +55,21 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': False,
         },
     },
 }
-
-# Log important settings
-logger = logging.getLogger(__name__)
-logger.info(f"DEBUG: {DEBUG}")
-logger.info(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
-logger.info(f"RENDER_EXTERNAL_HOSTNAME: {RENDER_EXTERNAL_HOSTNAME}")
-logger.info(f"DATABASE_URL is set: {'Yes' if 'DATABASE_URL' in os.environ else 'No'}")
-
 
 
 AUTH_USER_MODEL = 'api.User'
@@ -98,6 +100,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'devmarketer_project.middleware.RequestLoggingMiddleware',
 ]
 
 ROOT_URLCONF = "devmarketer_project.urls"
@@ -169,7 +172,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 if not DEBUG:
     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
@@ -206,3 +208,23 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
+
+    
+logger = logging.getLogger(__name__)
+logger.info(f"DEBUG: {DEBUG}")
+logger.info(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+logger.info(f"RENDER_EXTERNAL_HOSTNAME: {RENDER_EXTERNAL_HOSTNAME}")
+logger.info(f"DATABASE_URL is set: {'Yes' if 'DATABASE_URL' in os.environ else 'No'}")
+logger.info(f"Static URL: {STATIC_URL}")
+logger.info(f"Static Root: {STATIC_ROOT}")
+
+class RequestLoggingMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        logger.info(f"Received request: {request.method} {request.path}")
+        logger.info(f"Headers: {request.headers}")
+        response = self.get_response(request)
+        logger.info(f"Response status: {response.status_code}")
+        return response
